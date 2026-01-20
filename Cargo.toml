@@ -1,0 +1,13 @@
+[workspace]
+members = [
+    "programs/01_signer_check",
+    "programs/02_pda_sharing",
+    "programs/03_reinitialization",
+    "programs/04_integer_overflow",
+    "programs/05_pinocchio_vs_anchor"
+]
+
+[profile.release]
+overflow-checks = true
+lto = "fat"
+codegen-units = 1

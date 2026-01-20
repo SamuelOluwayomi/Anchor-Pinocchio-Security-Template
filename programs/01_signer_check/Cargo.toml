@@ -1,0 +1,20 @@
+[package]
+name = "signer_check"
+version = "0.1.0"
+description = "Lesson 1: Signer Verification"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "signer_check"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.30.0"
