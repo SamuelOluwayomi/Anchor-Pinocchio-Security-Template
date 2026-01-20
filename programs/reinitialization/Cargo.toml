@@ -1,12 +1,12 @@
 [package]
-name = "pinocchio_vs_anchor"
+name = "reinitialization"
 version = "0.1.0"
-description = "Lesson 5: Framework Comparison"
+description = "Lesson 3: Reinitialization Attacks"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "pinocchio_vs_anchor"
+name = "reinitialization"
 
 [features]
 default = []
@@ -17,5 +17,4 @@ no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
-anchor-lang = "0.31.1"
-pinocchio = "0.6.0"
+anchor-lang = "0.30.0"

@@ -1,15 +1,11 @@
 use anchor_lang::prelude::*;
 
-declare_id!("BMELQtEEmhxRvzsZ8tUfdP4QhshEzCEHVyECS1QepT3n");
+declare_id!("6PpTEM9LKNPCSUHgwqxdXK6nmSuMwTkh8k81D56SFVhf");
 
 #[program]
 pub mod signer_check {
     use super::*;
 
-    // ❌ VULNERABLE: Does not verify that 'owner' actually signed.
-    // An attacker can pass any user's public key as 'owner' and since they
-    // passed the check `pot.owner == owner.key()`, the program allows the withdrawal.
-    // The missing piece is verifying `owner` is a signer interactively.
     pub fn insecure_withdraw(ctx: Context<InsecureWithdraw>, amount: u64) -> Result<()> {
         let pot = &mut ctx.accounts.pot;
         let owner = &mut ctx.accounts.owner;
@@ -20,24 +16,17 @@ pub mod signer_check {
 
         **pot.to_account_info().try_borrow_mut_lamports()? -= amount;
         **owner.to_account_info().try_borrow_mut_lamports()? += amount;
-
         Ok(())
     }
 
-    // ✅ SECURE: Uses the 'Signer' type.
-    // Anchor automatically verifies the signature of any account typed as 'Signer'
-    // before executing the instruction.
     pub fn secure_withdraw(ctx: Context<SecureWithdraw>, amount: u64) -> Result<()> {
         let pot = &mut ctx.accounts.pot;
         let owner = &mut ctx.accounts.owner;
 
-        // Note: Anchor's `Signer` type guarantees the account signed the transaction.
-        // We still check if this signer matches the pot's owner field.
         require!(pot.owner == owner.key(), ErrorCode::InvalidOwner);
 
         **pot.to_account_info().try_borrow_mut_lamports()? -= amount;
         **owner.to_account_info().try_borrow_mut_lamports()? += amount;
-
         Ok(())
     }
 
@@ -67,8 +56,7 @@ pub struct Initialize<'info> {
 pub struct InsecureWithdraw<'info> {
     #[account(mut)]
     pub pot: Account<'info, Pot>,
-    /// CHECK: ❌ VULNERABLE: This account is not typed as Signer.
-    /// We can pass any account here, and if it matches pot.owner, we steal funds.
+    /// CHECK: VULNERABLE - Missing Signer check
     #[account(mut)]
     pub owner: AccountInfo<'info>, 
 }
@@ -77,8 +65,6 @@ pub struct InsecureWithdraw<'info> {
 pub struct SecureWithdraw<'info> {
     #[account(mut)]
     pub pot: Account<'info, Pot>,
-    
-    // ✅ SECURE: This ensures the account signed the transaction.
     #[account(mut)]
     pub owner: Signer<'info>, 
 }
@@ -90,6 +76,6 @@ pub struct Pot {
 
 #[error_code]
 pub enum ErrorCode {
-    #[msg("Invalid owner.")]
+    #[msg("Invalid owner")]
     InvalidOwner,
 }

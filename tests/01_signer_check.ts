@@ -69,7 +69,7 @@ describe("01_signer_check", () => {
             .insecureWithdraw(new anchor.BN(10_000_000))
             .accounts({
                 pot: potPda,
-                owner: owner.publicKey, // We pass the legitimate owner's key
+                owner: owner.publicKey, // legitimate owner's key
             })
             // NO Signer required for 'owner' in this vulnerable instruction
             .rpc()
@@ -88,12 +88,6 @@ describe("01_signer_check", () => {
                     pot: potPda,
                     owner: owner.publicKey,
                 })
-                // NOTE: In Anchor client, if we don't provide the signer, it might implicitly use the Provider wallet 
-                // if the key is the same, but here 'owner' is a separate keypair.
-                // We do typically need to add .signers([owner]) if we want it to succeed.
-                // Since we are NOT adding .signers([owner]), and the IDL says it's a Signer, 
-                // Anchor client usually throws a "Signature verification failed" or "Missing signature" error locally 
-                // before even sending, OR it sends it and the RPC rejects it.
                 .rpc();
 
             assert.fail("Should have failed!");

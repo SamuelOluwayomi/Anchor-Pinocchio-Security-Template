@@ -1,0 +1,16 @@
+WARNING: `anchor-lang` version(0.31.1) and the current CLI version(0.30.1) don't match.
+
+	This can lead to unwanted behavior. To use the same CLI version, add:
+
+	[toolchain]
+	anchor_version = "0.31.1"
+
+	to Anchor.toml
+
+WARNING: `@coral-xyz/anchor` version(^0.31.1) and the current CLI version(0.30.1) don't match.
+
+	This can lead to unwanted behavior. To fix, upgrade the package by running:
+
+	yarn upgrade @coral-xyz/anchor@0.30.1
+
+Error: No such file or directory (os error 2)

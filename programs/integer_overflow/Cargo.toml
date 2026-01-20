@@ -1,12 +1,12 @@
 [package]
-name = "reinitialization"
+name = "integer_overflow"
 version = "0.1.0"
-description = "Lesson 3: Reinitialization Attacks"
+description = "Lesson 4: Integer Overflow / Underflow"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "reinitialization"
+name = "integer_overflow"
 
 [features]
 default = []
@@ -17,4 +17,4 @@ no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
-anchor-lang = "0.31.1"
+anchor-lang = "0.30.0"
