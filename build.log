@@ -3,7 +3,7 @@ WARNING: `anchor-lang` version(0.30.0) and the current CLI version(0.30.1) don't
 	This can lead to unwanted behavior. To use the same CLI version, add:
 
 	[toolchain]
-	anchor_version = "0.30.0"
+	anchor_version = "0.31.1"
 
 	to Anchor.toml
 

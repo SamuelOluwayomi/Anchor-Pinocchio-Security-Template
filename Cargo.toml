@@ -5,7 +5,11 @@ members = [
     "programs/pda_sharing",
     "programs/reinitialization",
     "programs/integer_overflow",
-    "programs/pinocchio_vs_anchor"
+    "programs/pinocchio_vs_anchor",
+    "programs/account_closing",
+    "programs/bump_seed_canonicalization",
+    "programs/owner_checks",
+    "programs/type_cosplay"
 ]
 
 [profile.release]

@@ -1,5 +1,5 @@
 [toolchain]
-anchor_version = "0.30.0"
+anchor_version = "0.30.1"
 package_manager = "yarn"
 
 [features]
@@ -12,6 +12,10 @@ pda_sharing = "ECg8PSWDnt1bxBxoQrmp7T2eUTSfo7aYecAiamSRdACg"
 reinitialization = "FhtVsPAxuvMJhgsMMnegK9Qv4dTwxn6JdKwPypWSMYag"
 integer_overflow = "GfN9UbCqhCwPQzpZL8aVqDSwaFpDGZ9SdRii9YvJaoVZ"
 pinocchio_vs_anchor = "rZP3GCrKbBRrVgA4t14HEve5s1VCXfye1NahKuBUps2"
+account_closing = "ACmY1XMJy94VkriJN6o77UjDr1qRWBYe67JrMagY2Gto"
+bump_seed_canonicalization = "Bumj5wt9dm2cK2o9ayeguHUtpnwnUFLQHaqUaewFegV2"
+owner_checks = "owjTGQ5tcsF9jiy1rDeiBxKj7fAcz3h8tbs9q9f5Awm"
+type_cosplay = "Ty2F8Q6C9m695p29DS6gMziMhGBhr4KPh7RkCp4p21a"
 
 [registry]
 url = "https://api.apr.dev"

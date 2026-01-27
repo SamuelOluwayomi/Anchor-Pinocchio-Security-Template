@@ -1,12 +1,12 @@
 [package]
-name = "integer_overflow"
+name = "bump_seed_canonicalization"
 version = "0.1.0"
-description = "Lesson 4: Integer Overflow / Underflow"
+description = "Lesson 7: Bump Seed Canonicalization"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "integer_overflow"
+name = "bump_seed_canonicalization"
 
 [features]
 default = []
@@ -17,4 +17,4 @@ no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
-anchor-lang = "0.30.1"
+anchor-lang = "0.30.0"
