@@ -1,18 +1,57 @@
-# Lesson 1: Missing Signer Check
+# 🔓 Lesson 1: Missing Signer Check
+
+## 📖 Overview
+One of the most fundamental vulnerabilities in Solana development is failing to verify that a transaction was actually authorized by the user it claims to be from. In Solana, simply passing an account's public key (`AccountInfo`) does **not** prove ownership or authorization.
 
 ## 💀 The Vulnerability
-In Solana programs, simply passing an account's public key is not enough proof of ownership. You must verify that the user **signed** the transaction.
+When you define an account in Anchor as `AccountInfo` (or `Account<'info, T>`), the program only checks that the account *exists* and matches the type (if specified). It does **not** automatically check if the transaction was signed by the private key corresponding to that address.
 
-If you use `AccountInfo` instead of `Signer` in Anchor (or forget `is_signer` check in raw Rust), anyone can pretend to be that user.
+### Vulnerable Code Example
+```rust
+// ❌ VULNERABLE
+#[derive(Accounts)]
+pub struct InsecureWithdraw<'info> {
+    // Requires authorization, but only checks address!
+    // Anyone can pass Alice's address here.
+    #[account(mut)]
+    pub owner: AccountInfo<'info>, 
+    
+    #[account(mut)]
+    pub vault: Account<'info, Vault>,
+    ...
+}
+```
 
-## 💥 The Exploit
-An attacker can call `insecure_withdraw` passing the **victim's** public key as the `owner` account.
-The program checks `if pot.owner == owner.key()`, which is true (the public keys match).
-The program then transfers funds to that account.
-Wait... does this steal funds?
-- If the withdrawal destination is the owner's wallet, the attacker just forced a withdrawal (griefing).
-- BUT, if the logic allowed withdrawing to *another* account provided by the authority, the attacker could steal everything. 
-- In this specific example, it demonstrates **Identity Spoofing**. The attacker pretends to be the owner to trigger an action the owner didn't authorize.
+## 💥 The Attack Scenario
+**Identity Spoofing** allows an attacker to impersonate a privileged user.
 
-## 🛡️ The Fix
-Use the `Signer<'info>` type in your Anchor validation struct. This ensures the runtime checked the signature.
+1. **The Setup**: A user `Alice` has a vault with 100 SOL managed by this program. The vault stores `owner = Alice_Pubkey`.
+2. **The Attack**:
+   - `Mallory` (attacker) calls the `insecure_withdraw` instruction.
+   - `Mallory` passes `Alice`'s public key as the `owner` account argument.
+   - `Mallory` passes her own wallet as the `destination`.
+3. **The Execution**:
+   - The program checks: `if ctx.accounts.owner.key() == ctx.accounts.vault.owner`.
+   - **Result**: `true`! The keys match.
+4. **The Outcome**: The program transfers 100 SOL to Mallory. Alice loses her funds without ever touching her wallet.
+
+## 🛡️ The Secure Solution
+Use the `Signer<'info>` type provided by Anchor. This adds a constraint that the runtime must verify a cryptographic signature for this account.
+
+### Secure Code Example
+```rust
+// ✅ SECURE
+#[derive(Accounts)]
+pub struct SecureWithdraw<'info> {
+    // Enforces that this account SIGNED the transaction
+    #[account(mut)]
+    pub owner: Signer<'info>,
+    
+    #[account(mut, has_one = owner)]
+    pub vault: Account<'info, Vault>,
+    ...
+}
+```
+
+## 🧠 Key Takeaway
+Always use `Signer<'info>` for any account that is authorizing an action (like spending funds, updating config, or closing accounts). `AccountInfo` is only for *reading* data or when the account is just a destination/source without authority.
