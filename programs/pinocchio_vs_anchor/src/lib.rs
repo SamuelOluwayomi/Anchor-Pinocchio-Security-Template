@@ -8,6 +8,8 @@ declare_id!("rZP3GCrKbBRrVgA4t14HEve5s1VCXfye1NahKuBUps2");
 
 #[program]
 pub mod pinocchio_vs_anchor {
+    use super::*;
+    
     // ✅ ANCHOR: High-level framework handles security automatically
     // - Automatic discriminator checks
     // - Type-safe account validation

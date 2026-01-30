@@ -17,7 +17,7 @@ pub mod integer_overflow {
     // ✅ SECURE: Uses checked_add which returns error on overflow
     // Prevents silent overflow, transaction fails with clear error
     pub fn secure_add(_ctx: Context<Empty>, a: u64, b: u64) -> Result<u64> {
-        let result = a.checked_add(b).ok_or(ErrorCode::Overflow.into())?;
+        let result = a.checked_add(b).ok_or(ErrorCode::Overflow)?;
         msg!("Result: {}", result);
         Ok(result)
     }

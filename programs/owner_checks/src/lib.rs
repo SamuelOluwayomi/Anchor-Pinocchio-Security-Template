@@ -9,8 +9,16 @@ pub mod owner_checks {
     // ❌ VULNERABLE: Uses AccountInfo without verifying program ownership
     // Attacker can pass accounts from other programs with same data layout
     pub fn insecure_update(ctx: Context<InsecureUpdate>, new_data: u64) -> Result<()> {
-        let config = &mut ctx.accounts.config;
-        config.data = new_data;
+        // Fix: deserialize the raw account data manually
+        let config_info = &ctx.accounts.config;
+        let mut config_data = Config::try_deserialize(&mut config_info.data.borrow().as_ref())?;
+
+        // Update the data in the struct
+        config_data.data = new_data;
+
+        // Serialize it back into the raw account buffer
+        config_data.try_serialize(&mut *config_info.try_borrow_mut_data()?)?;
+        
         Ok(())
     }
 

@@ -10,9 +10,15 @@ pub mod type_cosplay {
     // Attacker can pass AdminAccount instead of UserAccount (if data layout matches)
     // Discriminator bypass allows privilege escalation
     pub fn insecure_withdraw(ctx: Context<InsecureWithdraw>, amount: u64) -> Result<()> {
-        let user_account = &mut ctx.accounts.user_account;
-        require!(user_account.balance >= amount, ErrorCode::InsufficientFunds);
-        user_account.balance -= amount;
+        // Deserialize the raw account data manually as UserAccount
+        let user_account_info = &ctx.accounts.user_account;
+        let mut user_account_data = UserAccount::try_deserialize(&mut user_account_info.data.borrow().as_ref())?;
+        
+        require!(user_account_data.balance >= amount, ErrorCode::InsufficientFunds);
+        user_account_data.balance -= amount;
+        
+        // Serialize it back into the raw account buffer
+        user_account_data.try_serialize(&mut *user_account_info.try_borrow_mut_data()?)?;
         Ok(())
     }
 
