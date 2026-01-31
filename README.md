@@ -24,6 +24,8 @@ This template includes **9 security lessons**, each with:
 | 8 | **Owner Checks** | Missing program ownership validation |
 | 9 | **Type Cosplay** | Account discriminator bypass/substitution |
 
+> 📖 **Want an in-depth analysis?** Check out the [**SECURITY_PATTERNS_DEEP_DIVE.md**](./SECURITY_PATTERNS_DEEP_DIVE.md) guide for comprehensive explanations, attack vectors, and best practices for all 9 patterns.
+
 ---
 
 ## 🚀 Quick Start

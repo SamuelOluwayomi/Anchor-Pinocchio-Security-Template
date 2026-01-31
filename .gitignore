@@ -5,3 +5,13 @@ target
 node_modules
 test-ledger
 .yarn
+
+# Keypair files (should be generated locally)
+*.json
+
+# Temporary build scripts
+*.sh
+
+# Build logs
+*.log
+*.txt
