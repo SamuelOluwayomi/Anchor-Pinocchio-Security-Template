@@ -10,6 +10,7 @@ members = [
     "programs/bump_seed_canonicalization",
     "programs/owner_checks",
     "programs/type_cosplay"
+    
 ]
 
 [profile.release]
